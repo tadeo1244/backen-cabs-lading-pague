@@ -5,7 +5,7 @@ import type { Response } from 'express'; // Cambiar a import type
 
 @Controller('api')
 export class DataController {
-  constructor(private readonly dataService: DataService) {}
+  constructor(private readonly dataService: DataService) { }
 
   // Endpoints protegidos con API Key
   @Get('data')
@@ -95,11 +95,30 @@ export class DataController {
   }
 
   @Get('public/products')
-  @Header('Access-Control-Allow-Origin', 'https://cabsdgo.com')
   async getPublicProducts(@Res() res: Response) {
     try {
+      // Configurar CORS para permitir el origen específico
+      const origin = res.req.headers.origin;
+      const allowedOrigins = [
+        'https://cabsdgo.com',
+        'https://www.cabsdgo.com',
+        'http://localhost:3000',
+        'http://localhost:3001',
+        'http://localhost:4321',
+        'http://localhost:5173',
+      ];
+
+      if (origin && allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+      } else {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+      }
+
+      res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept');
+
       const scrapingData = await this.dataService.getWebScrapingData();
-      
+
       if (!scrapingData || !Array.isArray(scrapingData)) {
         return res.json({
           success: true,
@@ -110,13 +129,13 @@ export class DataController {
       }
 
       let allProducts: any[] = [];
-      
+
       for (const item of scrapingData) {
         if (item && item.data && Array.isArray(item.data)) {
           allProducts = allProducts.concat(item.data);
         }
       }
-      
+
       return res.json({
         success: true,
         total: allProducts.length,
@@ -138,7 +157,7 @@ export class DataController {
   async getPublicCategories(@Res() res: Response) {
     try {
       const scrapingData = await this.dataService.getWebScrapingData();
-      
+
       if (!scrapingData || !Array.isArray(scrapingData)) {
         return res.json({
           success: true,
@@ -149,19 +168,19 @@ export class DataController {
       }
 
       let allProducts: any[] = [];
-      
+
       for (const item of scrapingData) {
         if (item && item.data && Array.isArray(item.data)) {
           allProducts = allProducts.concat(item.data);
         }
       }
-      
+
       const categories = [...new Set(
         allProducts
           .map(p => p && p.categoria ? p.categoria : null)
           .filter((c): c is string => c !== null && c !== undefined)
       )];
-      
+
       return res.json({
         success: true,
         categories,

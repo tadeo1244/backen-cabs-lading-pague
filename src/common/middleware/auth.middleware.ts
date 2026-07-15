@@ -7,7 +7,7 @@ export class AuthMiddleware implements NestMiddleware {
   constructor(private configService: ConfigService) {}
 
   use(req: Request, res: Response, next: NextFunction) {
-    // Rutas que siempre están exentas
+    // Lista completa de rutas públicas
     const publicPaths = [
       '/health',
       '/api/public/data',
@@ -20,7 +20,7 @@ export class AuthMiddleware implements NestMiddleware {
       '/google-reviews/public/stats',
     ];
 
-    // Si es una ruta pública, permitir acceso
+    // Permitir todas las rutas públicas sin autenticación
     if (publicPaths.some(path => req.path.startsWith(path))) {
       return next();
     }
@@ -38,7 +38,8 @@ export class AuthMiddleware implements NestMiddleware {
       'https://www.cabsdgo.com',
       'http://localhost:3000',
       'http://localhost:3001',
-      'http://localhost:4321', // Astro dev
+      'http://localhost:4321',
+      'http://localhost:5173',
       'https://backen-cabs-lading-pague.onrender.com',
     ];
 
