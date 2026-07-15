@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model GoogleMapsData {
+  id           String   @id @default(cuid())
+  placeId      String   @unique
+  name         String
+  rating       Float?
+  totalRatings Int?
+  reviews      Json?
+  address      String?
+  phone        String?
+  website      String?
+  updatedAt    DateTime @updatedAt
+  createdAt    DateTime @default(now())
+  
+  @@map("google_maps_data")
+}
+
+model GoogleReview {
+  id           String   @id @default(cuid())
+  reviewId     String   @unique  // ID de la reseña en Google
+  placeId      String   // ID del lugar en Google
+  authorName   String
+  authorImage  String?
+  rating       Int
+  text         String?
+  date         String?
+  likes        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  @@map("google_reviews")
+  @@index([placeId])
+}
+
+model WebScrapingData {
+  id           String   @id @default(cuid())
+  sourceUrl    String   @unique
+  title        String
+  content      String?
+  metadata     Json?
+  data         Json
+  hash         String
+  updatedAt    DateTime @updatedAt
+  createdAt    DateTime @default(now())
+  
+  @@map("web_scraping_data")
+}
+
+model SyncLog {
+  id           String   @id @default(cuid())
+  source       String
+  status       String
+  dataHash     String?
+  errorMessage String?
+  recordsCount Int?
+  createdAt    DateTime @default(now())
+  
+  @@map("sync_logs")
+}
