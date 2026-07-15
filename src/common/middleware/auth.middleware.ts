@@ -14,7 +14,10 @@ export class AuthMiddleware implements NestMiddleware {
       '/api/public/google-maps',
       '/api/public/web-scraping',
       '/api/public/products',
-      '/api/public/products/categories'
+      '/api/public/products/categories',
+      '/google-reviews/public/reviews',
+      '/google-reviews/public/place-info',
+      '/google-reviews/public/stats',
     ];
 
     // Si es una ruta pública, permitir acceso
@@ -35,6 +38,8 @@ export class AuthMiddleware implements NestMiddleware {
       'https://www.cabsdgo.com',
       'http://localhost:3000',
       'http://localhost:3001',
+      'http://localhost:4321', // Astro dev
+      'https://backen-cabs-lading-pague.onrender.com',
     ];
 
     // Verificar API Key
