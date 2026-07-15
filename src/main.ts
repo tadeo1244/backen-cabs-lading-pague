@@ -11,6 +11,8 @@ async function bootstrap() {
       'https://cabsdgo.com',
       'https://www.cabsdgo.com',
       'http://localhost:4321', 
+      'http://localhost:5173',
+      
 
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
