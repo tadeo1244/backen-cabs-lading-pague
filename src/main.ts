@@ -10,8 +10,8 @@ async function bootstrap() {
     origin: [
       'https://cabsdgo.com',
       'https://www.cabsdgo.com',
-      'http://localhost:3000',
-      'http://localhost:3001',
+      'http://localhost:4321', 
+
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key'],
