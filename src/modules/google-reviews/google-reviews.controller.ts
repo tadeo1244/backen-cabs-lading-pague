@@ -1,3 +1,4 @@
+// src/modules/google-reviews/google-reviews.controller.ts
 import { Controller, Get, Post, Query, UseGuards, Res, Header } from '@nestjs/common';
 import { GoogleReviewsService } from './google-reviews.service';
 import { AuthGuard } from '../auth/auth.guard';
@@ -49,11 +50,32 @@ export class GoogleReviewsController {
 
   // Endpoint público para obtener reseñas
   @Get('public/reviews')
-  @Header('Access-Control-Allow-Origin', 'https://cabsdgo.com')
   async getPublicReviews(@Res() res: Response, @Query('limit') limit?: string) {
     try {
+      // Configurar CORS manualmente
+      const origin = res.req.headers.origin;
+      const allowedOrigins = [
+        'https://cabsdgo.com',
+        'https://www.cabsdgo.com',
+        'http://localhost:3000',
+        'http://localhost:3001',
+        'http://localhost:4321',
+        'http://localhost:4322',
+        'http://localhost:5173',
+      ];
+
+      if (origin && allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+      } else {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+      }
+
+      res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept');
+
       const limitNum = limit ? parseInt(limit, 10) : 50;
       const result = await this.googleReviewsService.getReviews(limitNum, 0);
+      
       return res.json({
         success: true,
         ...result,
@@ -71,9 +93,29 @@ export class GoogleReviewsController {
 
   // Endpoint público para obtener información del lugar
   @Get('public/place-info')
-  @Header('Access-Control-Allow-Origin', 'https://cabsdgo.com')
   async getPublicPlaceInfo(@Res() res: Response) {
     try {
+      // Configurar CORS manualmente
+      const origin = res.req.headers.origin;
+      const allowedOrigins = [
+        'https://cabsdgo.com',
+        'https://www.cabsdgo.com',
+        'http://localhost:3000',
+        'http://localhost:3001',
+        'http://localhost:4321',
+        'http://localhost:4322',
+        'http://localhost:5173',
+      ];
+
+      if (origin && allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+      } else {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+      }
+
+      res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept');
+
       const data = await this.googleReviewsService.getPlaceInfo();
       return res.json({
         success: true,
@@ -92,9 +134,29 @@ export class GoogleReviewsController {
 
   // Endpoint público para obtener estadísticas
   @Get('public/stats')
-  @Header('Access-Control-Allow-Origin', 'https://cabsdgo.com')
   async getPublicStats(@Res() res: Response) {
     try {
+      // Configurar CORS manualmente
+      const origin = res.req.headers.origin;
+      const allowedOrigins = [
+        'https://cabsdgo.com',
+        'https://www.cabsdgo.com',
+        'http://localhost:3000',
+        'http://localhost:3001',
+        'http://localhost:4321',
+        'http://localhost:4322',
+        'http://localhost:5173',
+      ];
+
+      if (origin && allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+      } else {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+      }
+
+      res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept');
+
       const data = await this.googleReviewsService.getReviewStats();
       return res.json({
         success: true,
